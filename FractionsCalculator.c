@@ -5,11 +5,6 @@ struct Fraction {
 	int num, den; //numerator, denomiator
 };
 
-
-int smaller(int a, int b) {
-	if (a < b) return a;
-	return b;
-}
 int gcd(int a, int b) { //Greatest common divisor
 	if (b == 0) {
 		return a;
@@ -73,8 +68,15 @@ struct Fraction printFraction(struct Fraction x) {
 		if (gcd_temp != 1) { //jest najwiekszy wspolny dzielnik
 			if (abs(x.num) % abs(x.den) == 0) { //wypisywanie u³amków w postaci liczby ca³kowitej
 				if (x.num < 0 | x.den < 0) {
-					printf("-%d", abs(x.num) / abs(x.den));
-					return;
+					if (x.num < 0 && x.den < 0) {
+						printf("%d", abs(x.num) / abs(x.den));
+						return;
+					}
+					else {
+						printf("-%d", abs(x.num) / abs(x.den));
+						return;
+					}
+
 				}
 				else {
 					printf("%d", abs(x.num) / abs(x.den));
@@ -85,8 +87,15 @@ struct Fraction printFraction(struct Fraction x) {
 				int reducedNominator = x.num / gcd(abs(x.num), abs(x.den));
 				int reducedDenominator = x.den / gcd(abs(x.num), abs(x.den));
 				if (x.num < 0 | x.den < 0) {
-					printf("-%d %d/%d\n", abs(reducedNominator) / abs(reducedDenominator), abs(reducedNominator) % abs(reducedDenominator), abs(reducedDenominator));
-					return;
+					if (x.num < 0 && x.den < 0) {
+						printf("%d %d/%d\n", abs(reducedNominator) / abs(reducedDenominator), abs(reducedNominator) % abs(reducedDenominator), abs(reducedDenominator));
+						return;
+					}
+					else {
+						printf("-%d %d/%d\n", abs(reducedNominator) / abs(reducedDenominator), abs(reducedNominator) % abs(reducedDenominator), abs(reducedDenominator));
+						return;
+					}
+
 				}
 				else {
 					printf("%d %d/%d\n", reducedNominator / reducedDenominator, reducedNominator % reducedDenominator, reducedDenominator);
@@ -99,8 +108,15 @@ struct Fraction printFraction(struct Fraction x) {
 		else { //nie ma najwiekszego wspolnego dzielnika
 
 			if (x.num < 0 | x.den < 0) {
-				printf("-%d %d/%d\n", abs(x.num) / abs(x.den), abs(x.num) % abs(x.den), abs(x.den));
-				return;
+				if (x.num < 0 && x.den < 0) {
+					printf("%d %d/%d\n", abs(x.num) / abs(x.den), abs(x.num) % abs(x.den), abs(x.den));
+					return;
+				}
+				else {
+					printf("-%d %d/%d\n", abs(x.num) / abs(x.den), abs(x.num) % abs(x.den), abs(x.den));
+					return;
+				}
+
 			}
 			else {
 				printf("%d %d/%d\n", x.num / x.den, x.num % x.den, x.den);
@@ -117,7 +133,7 @@ struct Fraction sum(struct Fraction x, struct Fraction y) {
 	int d = y.den;// mianownik ulamka y
 
 	struct Fraction z;
-	z.num = a * d + c * b;
+	z.num = (a * d) +(c * b);
 	z.den = b * d;
 
 	printFraction(z);
@@ -131,7 +147,7 @@ struct Fraction sub(struct Fraction x, struct Fraction y) {
 	int d = y.den;// mianownik ulamka y
 
 	struct Fraction z;
-	z.num = a * d - c * b;
+	z.num = (a * d) - (c * b);
 	z.den = b * d;
 	printFraction(z);
 	printf("\n");
@@ -208,9 +224,6 @@ char readOperation() {
 }
 
 int main() {
-	struct Fraction x = {2, 5};
-	struct Fraction y = { 1, 2};
-	//printFraction(x);
 	struct Fraction z, q;
 	readFraction(&z);
 	readFraction(&q);
