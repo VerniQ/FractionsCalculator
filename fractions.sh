@@ -133,6 +133,10 @@ printFraction() {
         echo "0"
         return 
     fi
+    if [ $a -eq $b ]; then
+        echo "1"
+        return 
+    fi
 
     gcd_temp=$(gcd $abs_a $abs_b)
     if [ $((abs_a)) -lt $((abs_b)) ]; then
