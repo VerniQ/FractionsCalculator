@@ -2,10 +2,10 @@
 #include <stdlib.h>
 
 struct Fraction {
-	int num, den; //numerator, denomiator
+	int num, den; //numerator, denomiator czyli licznik i mianownik
 };
 
-int gcd(int a, int b) { //Greatest common divisor
+int gcd(int a, int b) { //Najwiekszy wspolny dzielnik
 	if (b == 0) {
 		return a;
 	}
@@ -14,72 +14,74 @@ int gcd(int a, int b) { //Greatest common divisor
 	}
 }
 struct Fraction printFraction(struct Fraction x) {
-	int a = x.num;
-	int b = x.den;
-	if (b == 0) {
+	if (x.den == 0) {//czy da sie wykonac dzielenie przez zero?
 		printf("NaN");
 		return;
 	}
-	if (a == 0) {
+	if (x.num == 0) {//co w przypadku gdy licznik jest rowny zero?
 		printf("0");
 		return;
 	}
-	if (abs(a) < abs(b)) { //fraction lower than 1
-		if (gcd(abs(a), abs(b)) != 1) { //Check if numbers have common divisor
-			int gcd_temp = gcd(abs(a), abs(b));
+	if (x.num == x.den) { //
+		printf("1");
+		return;
+	}
+	if (abs(x.num) < abs(x.den)) { //ulamki mniejsze od 1
+		if (gcd(abs(x.num), abs(x.den)) != 1) { //sprawdzenie czy mianownik i licznik maja najwiekszy wspolny dzielnik
+			int gcd_temp = gcd(abs(x.num), abs(x.den));
 
-			if (a < 0 || b < 0) {
-				if (a < 0 && b < 0) {
-					printf("%d/%d", a / gcd_temp, b / gcd_temp);
-					return ;
+			if (x.num < 0 || x.den < 0) {
+				if (x.num < 0 && x.den < 0) {
+					printf("%d/%d\n", abs(x.num) / gcd_temp, abs(x.den) / gcd_temp);
+					return;
 				}
 				else {
-					printf("-%d/%d", abs(a) / gcd_temp, abs(b) / gcd_temp);
-					return ;
+					printf("-%d/%d\n", abs(x.num) / gcd_temp, abs(x.den) / gcd_temp);
+					return;
 				}
 
 			}
 			else {
-				printf("%d/%d", a / gcd_temp, b / gcd_temp);
-				return ;
+				printf("%d/%d\n", x.num / gcd_temp, x.den / gcd_temp);
+				return;
 			}
 
 		}
 		else {
-			if (a < 0 || b < 0) {
-				if (a < 0 && b < 0) {
-					printf("%d/%d", a, b);
-					return ;
+			if (x.num < 0 || x.den < 0) {
+				if (x.num < 0 && x.den < 0) {
+					printf("%d/%d\n", x.num, x.den);
+					return;
 				}
 				else {
-					printf("-%d/%d", abs(a), abs(b));
-					return ;
+					printf("-%d/%d\n", abs(x.num), abs(x.den));
+					return;
 				}
 
 			}
 			else {
-				printf("%d/%d", a, b);
-				return ;
+				printf("%d/%d\n", x.num, x.den);
+				return;
 			}
 		}
 	}
-	if (abs(x.num) > abs(x.den)) { //fraction greater than 1
-		int gcd_temp = gcd(abs(a), abs(b));
+	if (abs(x.num) > abs(x.den)) { //ulamki wieksze od 1
+		int gcd_temp = gcd(abs(x.num), abs(x.den));
 		if (gcd_temp != 1) { //jest najwiekszy wspolny dzielnik
-			if (abs(x.num) % abs(x.den) == 0) { //wypisywanie u�amk�w w postaci liczby ca�kowitej
+			if (abs(x.num) % abs(x.den) == 0) { //wypisywanie ulamków w postaci liczby calkowitej
 				if (x.num < 0 | x.den < 0) {
 					if (x.num < 0 && x.den < 0) {
-						printf("%d", abs(x.num) / abs(x.den));
+						printf("%d\n", abs(x.num) / abs(x.den));
 						return;
 					}
 					else {
-						printf("-%d", abs(x.num) / abs(x.den));
+						printf("-%d\n", abs(x.num) / abs(x.den));
 						return;
 					}
 
 				}
 				else {
-					printf("%d", abs(x.num) / abs(x.den));
+					printf("%d\n", abs(x.num) / abs(x.den));
 					return;
 				}
 			}
@@ -102,7 +104,7 @@ struct Fraction printFraction(struct Fraction x) {
 					return;
 
 				}
-				
+
 			}
 		}
 		else { //nie ma najwiekszego wspolnego dzielnika
@@ -124,8 +126,13 @@ struct Fraction printFraction(struct Fraction x) {
 			}
 		}
 	}
+	return;
 }
-struct Fraction sum(struct Fraction x, struct Fraction y) {
+/*
+a/b + c/d = (a*d)/(b*d) + (c*b)/(d*b) = (a*d + c*b) / (b*d)
+*/
+
+struct Fraction sum(struct Fraction x, struct Fraction y) { //suma dwoch ulamkow
 	int a = x.num; //licznik ulamka x
 	int b = x.den;// mianownik ulamka x
 
@@ -133,13 +140,17 @@ struct Fraction sum(struct Fraction x, struct Fraction y) {
 	int d = y.den;// mianownik ulamka y
 
 	struct Fraction z;
-	z.num = (a * d) +(c * b);
+	z.num = (a * d) + (c * b);
 	z.den = b * d;
 
 	printFraction(z);
 	printf("\n");
 }
-struct Fraction sub(struct Fraction x, struct Fraction y) {
+/*
+a/b - c/d = (a*d)/(b*d) - (c*b)/(d*b) = (a*d - c*b) / (b*d)
+*/
+
+struct Fraction sub(struct Fraction x, struct Fraction y) { //roznica dwoch ulamkow
 	int a = x.num; //licznik ulamka x
 	int b = x.den;// mianownik ulamka x
 
@@ -153,7 +164,11 @@ struct Fraction sub(struct Fraction x, struct Fraction y) {
 	printf("\n");
 
 }
-struct Fraction mul(struct Fraction x, struct Fraction y) {
+/*
+a/b * c/d = a*c/b*d
+*/
+
+struct Fraction mul(struct Fraction x, struct Fraction y) { //iloczyn dwoch ulamkow
 	int a = x.num; //licznik ulamka x
 	int b = x.den;// mianownik ulamka x
 
@@ -167,7 +182,10 @@ struct Fraction mul(struct Fraction x, struct Fraction y) {
 	printf("\n");
 
 }
-struct Fraction quo(struct Fraction x, struct Fraction y) {
+/*
+a/b % c/d = a*d/b*c
+*/
+struct Fraction quo(struct Fraction x, struct Fraction y) { //iloraz dwoch ulamkow
 	int a = x.num; //licznik ulamka x
 	int b = x.den;// mianownik ulamka x
 
@@ -181,14 +199,12 @@ struct Fraction quo(struct Fraction x, struct Fraction y) {
 	printf("\n");
 
 }
-struct Fraction fractionOperation(char operation, struct Fraction x, struct Fraction y) {
+struct Fraction fractionOperation(char operation, struct Fraction x, struct Fraction y) { //funckja wywolujaca dzialania, na podstawie danych przekazanych przez uzytkownika
 	printFraction(x);
-	printf("\n");
 	printf("%c \n", operation);
 	printFraction(y);
 	printf("\n");
-	printf("=");
-	printf("\n");
+	printf("=\n");
 	struct Fraction z;
 	switch (operation) {
 	case '+':
@@ -197,22 +213,43 @@ struct Fraction fractionOperation(char operation, struct Fraction x, struct Frac
 	case '-':
 		z = sub(x, y);
 		break;
-	case '%':
+	case '/':
 		z = quo(x, y);
 		break;
 	case '*':
 		z = mul(x, y);
 		break;
 	default:
-		printf("Unexpected operation. Please try again");
+		printf("Niepoprawne działanie! Dostępne opcje: +, -, *, /");
 		break;
 
 		printFraction(z);
 	}
 }
-void readFraction(struct Fraction* fraction) {
+void readFractions(struct Fraction* fraction) {
 	printf("Podaj ulamek w formacie a/b: ");
 	scanf_s("%d/%d", &(fraction->num), &(fraction->den));
+}
+void readFraction(struct Fraction* fraction) {
+	char input[50];  // Zakładam, że maksymalna długość wprowadzonego ciągu to 50 znaków
+
+	// Używamy pętli while, aby kontynuować próby wczytywania, dopóki nie zostanie wprowadzony poprawny format
+	while (1) {
+		printf("Podaj ulamek w formacie a/b: ");
+		scanf_s("%s", input, sizeof(input));
+
+		// Używamy sscanf do analizy wprowadzonego ciągu w formacie a/b
+		int result = sscanf_s(input, "%d/%d", &(fraction->num), &(fraction->den));
+
+		// Sprawdzamy, czy udało się poprawnie wczytać wartości
+		if (result == 2) {
+			break;  // Wychodzimy z pętli, gdy dane zostały poprawnie wczytane
+		}
+		else {
+			printf("Bledny format. Podaj ulamek w formacie a/b.\n");
+			// Opcjonalnie, można dodać kod obsługujący ten błąd, np. poprzez ponowne wywołanie funkcji lub zakończenie programu
+		}
+	}
 }
 char readOperation() {
 	char operation;
