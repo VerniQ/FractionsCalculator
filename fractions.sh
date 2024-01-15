@@ -238,6 +238,21 @@ readFraction() {
             break
         else
             echo "Błędny format. Podaj ulamek w formacie a/b."
+            echo "NaN NaN"
+            break
+        fi
+    done
+}
+readFraction() {
+    while true; do
+        read -p "Podaj ulamek w formacie a/b: " input
+
+        if [[ "$input" =~ ^-?[0-9]+/-?[0-9]+$ ]]; then
+            IFS='/' read -r numerator denominator <<< "$input"
+            echo "$numerator $denominator"
+            break
+        else
+            echo "Błędny format. Podaj ulamek w formacie a/b."
         fi
     done
 }
@@ -262,7 +277,7 @@ echo "Wprowadź drugi ułamek:"
 read -r numerator2 denominator2 <<< "$(readFraction)"
 
 operation=$(readOperation)
-if ["$operation" -eq '/' ] &&  [$numerator1 -eq 0]; then
+if [ "$operation" = '/' ] && [ "$numerator1" -eq 0 ]; then
     echo "Błąd! Dzielenie przez zero jest niewykonywalne!"
     exit
 else
